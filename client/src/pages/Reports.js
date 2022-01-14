@@ -1,11 +1,11 @@
 import React from 'react';
 
-const Auth = () => {
+const Reports = () => {
     return (
         <div>
-            AUTH
+            Отчеты
         </div>
     );
 };
 
-export default Auth;
+export default Reports;

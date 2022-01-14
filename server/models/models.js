@@ -4,15 +4,22 @@ const {DataTypes} = require('sequelize')
 
 const User = sequelize.define( 'user',{
 id:{type:DataTypes.INTEGER,primaryKey:true,autoIncrement:true},
-login:{type:DataTypes.STRING,unique:true},
-password:{type:DataTypes.STRING},
+login:{type:DataTypes.STRING,unique:true,allowNull:false},
+password:{type:DataTypes.STRING,allowNull:false},
 role:{type:DataTypes.STRING,defaultValue:'USER'},
+isActivated: {type:DataTypes.BOOLEAN,defaultValue:false},
+activationLink:{type:DataTypes.STRING},
 code:{type:DataTypes.STRING,unique:true}
 },{timestamps: false,})
 
+const TokenSchema = sequelize.define('token',{
+id:{type:DataTypes.INTEGER,primaryKey:true,autoIncrement:true},
+refreshToken:{type:DataTypes.STRING,allowNull:false},
+},{timestamps: false,})
+
+
 const Make = sequelize.define( 'make',{
 id:{type:DataTypes.INTEGER,primaryKey:true,autoIncrement:true},
-
 },{timestamps: false,})
 
 const Ruchka = sequelize.define('ruchka',{
@@ -65,6 +72,18 @@ const RuchaRuchkaFS = sequelize.define('ruchkaruchkafs',{
 },{
     timestamps: false,
 })
+const Journal = sequelize.define('journal',{
+    id:{type:DataTypes.INTEGER,primaryKey:true,autoIncrement:true},
+    name:{type:DataTypes.STRING,unique:true,allowNull:false},
+    formLink:{type:DataTypes.STRING},
+    reportLink:{type:DataTypes.STRING},
+    
+
+},{
+    timestamps: false,
+})
+User.hasOne(TokenSchema)
+TokenSchema.belongsTo(User)
 
 User.hasOne(Make)
 Make.belongsTo(User)
@@ -88,5 +107,6 @@ module.exports ={
     Ruchka,
     RuchkaFS,
     RuchaFSNotice,
-    RuchaRuchkaFS
+    RuchaRuchkaFS,
+    TokenSchema
 }
